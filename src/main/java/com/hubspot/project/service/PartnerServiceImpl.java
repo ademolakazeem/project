@@ -67,6 +67,7 @@ public class PartnerServiceImpl implements PartnerService {
         Collections.sort(partner.getAvailableDates());
         Map<LocalDate, Integer> startDates = new TreeMap<>();
         List<LocalDate> sortedDates = partner.getAvailableDates();
+
         startDates.put(sortedDates.get(0), 0);
 
         int index = 1;
@@ -74,7 +75,10 @@ public class PartnerServiceImpl implements PartnerService {
             LocalDate previousDate = sortedDates.get(index - 1);
             LocalDate currentDate = sortedDates.get(index);
 
-            if (DAYS.between(previousDate, currentDate) == 1) {
+            long dateDifference = DAYS.between(previousDate, currentDate);
+            LOGGER.info("Date diff: " + dateDifference);
+
+            if (Math.abs(dateDifference) == 1) {
                 LOGGER.info(" date: " + partner.getLastName() + " " + previousDate);
                 int count = startDates.get(previousDate);
                 startDates.put(previousDate, count + 1);
@@ -121,12 +125,12 @@ public class PartnerServiceImpl implements PartnerService {
 
                 for (LocalDate localDate : partnerDate) {
                     if (setDate.contains(localDate)) {
-                        List<Partner> par = new ArrayList<>();
+                        List<Partner> finalPartners = new ArrayList<>();
                         if (partnerMap.containsKey(localDate)) {
-                            par = partnerMap.get(localDate);
+                            finalPartners = partnerMap.get(localDate);
                         }
-                        par.add(partner);
-                        partnerMap.put(localDate, par);
+                        finalPartners.add(partner);
+                        partnerMap.put(localDate, finalPartners);
                     }
                 }
             }

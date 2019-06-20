@@ -70,7 +70,7 @@ public class InvitationServiceImpl implements InvitationService {
 
         }
 
-        int cn = 0;
+        int cn = 1;
         for (Country cnt : invites) {
             LOGGER.info("Partners: " + cn + " is: " + cnt.getName() + " " + cnt.getAttendeeCount() + " " + cnt.getStartDate());
             cn++;
