@@ -27,7 +27,6 @@ public class InvitationController {
         if (responseEntity == null) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         } else if (responseEntity.getStatusCode().equals(HttpStatus.OK)) {
-            LOGGER.info("response: " + responseEntity.getBody());
             return ResponseEntity.ok().body(responseEntity.getBody());
         } else {
             return ResponseEntity.status(responseEntity.getStatusCode()).build();

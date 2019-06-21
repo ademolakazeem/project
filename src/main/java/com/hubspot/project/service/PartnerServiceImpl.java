@@ -29,7 +29,6 @@ public class PartnerServiceImpl implements PartnerService {
     public List<Partner> getPartners() {
         ResponseEntity<SecPartner> partnerResponseEntity = null;
         List<Partner> partners = null;
-        ///dataset?userKey=1a0b57e0554e2bc71017b364b122
         final String partnerUrl = restUrl + "/" + "dataset?userKey=1a0b57e0554e2bc71017b364b122";
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
@@ -74,12 +73,7 @@ public class PartnerServiceImpl implements PartnerService {
         while (index < sortedDates.size()) {
             LocalDate previousDate = sortedDates.get(index - 1);
             LocalDate currentDate = sortedDates.get(index);
-
-            long dateDifference = DAYS.between(previousDate, currentDate);
-            LOGGER.info("Date diff: " + dateDifference);
-
-            if (Math.abs(dateDifference) == 1) {
-                LOGGER.info(" date: " + partner.getLastName() + " " + previousDate);
+            if (DAYS.between(previousDate, currentDate) == 1) {
                 int count = startDates.get(previousDate);
                 startDates.put(previousDate, count + 1);
                 startDates.put(currentDate, 1);

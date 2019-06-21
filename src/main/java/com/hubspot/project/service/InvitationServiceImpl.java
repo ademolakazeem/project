@@ -1,6 +1,5 @@
 package com.hubspot.project.service;
 
-import com.google.gson.GsonBuilder;
 import com.hubspot.project.model.Country;
 import com.hubspot.project.model.Partner;
 import com.hubspot.project.model.SecCountry;
@@ -69,12 +68,6 @@ public class InvitationServiceImpl implements InvitationService {
 
 
         }
-
-        int cn = 1;
-        for (Country cnt : invites) {
-            LOGGER.info("Partners: " + cn + " is: " + cnt.getName() + " " + cnt.getAttendeeCount() + " " + cnt.getStartDate());
-            cn++;
-        }
         SecCountry secCountry = new SecCountry();
         secCountry.setCountries(invites);
         return secCountry;
@@ -88,8 +81,7 @@ public class InvitationServiceImpl implements InvitationService {
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
         headers.set("userKey", "1a0b57e0554e2bc71017b364b122");
-        String jsonLocalDate = new GsonBuilder().setDateFormat("yyyy-MM-dd").create().toJson(getPartnersInvitations());
-        HttpEntity entity = new HttpEntity(jsonLocalDate, headers);
+        HttpEntity entity = new HttpEntity(getPartnersInvitations(), headers);
         try {
 
             LOGGER.info("Url:" + resultUrl);
@@ -97,12 +89,12 @@ public class InvitationServiceImpl implements InvitationService {
             invitationResponseEntity = restTemplate.exchange(resultUrl, HttpMethod.POST, entity,
                     new ParameterizedTypeReference<SecCountry>() {
                     });
+            return invitationResponseEntity;
 
         } catch (Exception ex) {
             LOGGER.info(String.valueOf(ex));
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-        return invitationResponseEntity;
 
     }
 }
